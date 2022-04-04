@@ -35,7 +35,7 @@ export const TypescriptPage: FC = () => {
         />
         <div>
           <p>【問題】</p>
-          <p>配列のindex番号1番の要素をconsoleに出力する。</p>
+          <p>配列のindex番号1番の要素をコンソールに出力する。</p>
           <br />
           <p>【コンソール画面】</p>
           <iframe srcDoc={consoleCode} width="100%"></iframe>

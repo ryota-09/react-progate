@@ -14,12 +14,11 @@ export const Top: FC = () => {
   const [editorData, setEditorData] = useState("");
 
   const handleEditorChange = (value: any) => {
-    console.log(value);
     setEditorData(value);
   };
   return (
     <>
-      <h1>Progate Clone</h1>
+      <h1>Progate Clone with React</h1>
       <p>【HTMLの練習】</p>
       <p>答えと同じ表示を目指そう！</p>
       <button onClick={() => setCode(editorData)}>表示させる</button>
