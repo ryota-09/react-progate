@@ -29,7 +29,6 @@ export const useAllFiles = () => {
         value: response.data,
       });
     }
-    console.log("useAllfile   ", newArray);
     setGlobalState({
       type: "SET_EDITORINFOLIST",
       payload: {

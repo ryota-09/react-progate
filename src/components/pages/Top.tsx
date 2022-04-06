@@ -9,19 +9,14 @@ const answerCode =
   "<h1 class='title'>タイトル</h1>\n\n<style>\n.title{\ncolor:red;\n}\n</style>";
 
 export const Top: FC = () => {
-  const [lang, setLang] = useState("html");
+  const [lang ] = useState("html");
   const [defaultValue, setDefaultValue] = useState(initialCode);
   const [code, setCode] = useState("");
   const [editorData, setEditorData] = useState("");
 
-  const { loadFileData } = useAllFiles()
-
   const changeValues = (value: any) => {
     setEditorData(value);
   };
-  useEffect(() => {
-    loadFileData();
-  },[])
   return (
     <>
       <h1>Progate Clone with React</h1>

@@ -1,3 +1,1 @@
-{
-  console.log("あああ")
-}
+console.log("あああ")
