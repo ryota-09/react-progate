@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/iframe-has-title */
 import Editor from "@monaco-editor/react";
-import { FC, useState, useRef, ChangeEvent } from "react";
+import { FC, useState, useRef, ChangeEvent, useEffect } from "react";
+import { useAllFiles } from "../../hooks/useAllFiles";
 
 const initialCode = "<!-- ここにコードを書いていく -->";
 const hintCode = "<!-- ここにコードを書いていく -->\n\n\n<style>\n\n</style>";
@@ -13,9 +14,14 @@ export const Top: FC = () => {
   const [code, setCode] = useState("");
   const [editorData, setEditorData] = useState("");
 
-  const handleEditorChange = (value: any) => {
+  const { loadFileData } = useAllFiles()
+
+  const changeValues = (value: any) => {
     setEditorData(value);
   };
+  useEffect(() => {
+    loadFileData();
+  },[])
   return (
     <>
       <h1>Progate Clone with React</h1>
@@ -31,7 +37,7 @@ export const Top: FC = () => {
           language={lang}
           value={defaultValue}
           onMount={() => setCode(initialCode)}
-          onChange={handleEditorChange}
+          onChange={changeValues}
         />
         <div>
           <p>【答え】</p>

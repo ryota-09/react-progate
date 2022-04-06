@@ -17,7 +17,9 @@ type State = {
 
 type Action = {
   type: "CHANGE_VALUE" | "SET_EDITORINFOLIST";
-  payload: {};
+  payload: {
+    editorInforList?: Array<EditorInfoList>;
+  };
 };
 
 type Props = {
@@ -32,11 +34,13 @@ const initialState: State = {
 const reducer = (state: State, action: Action) => {
   switch (action.type) {
     case "CHANGE_VALUE":
+      return state;
+    case "SET_EDITORINFOLIST":
+      return action.payload.editorInforList ? {...state, editorInfoList: [...action.payload.editorInforList]} : state;
     default:
       return state;
   }
 };
-
 export const EditorInfoListProvider = (props: Props) => {
   const { children } = props;
   const [globalState, setGlobalState] = useReducer(reducer, initialState);
