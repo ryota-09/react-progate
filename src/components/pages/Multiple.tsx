@@ -24,7 +24,6 @@ export const Multiple = () => {
   };
 
   const onClickCSS = () => {
-    setCurrentLang("css");
     setGlobalState({
       type: "PAYLOAD_CODE",
       payload: {
@@ -32,10 +31,12 @@ export const Multiple = () => {
         currentEditorCode: editorData,
       },
     });
+    setCurrentLang("css");
+    console.log("③      ", editorData);
   };
 
   const onClickHTML = () => {
-    setCurrentLang("html");
+    
     setGlobalState({
       type: "PAYLOAD_CODE",
       payload: {
@@ -43,9 +44,13 @@ export const Multiple = () => {
         currentEditorCode: editorData,
       },
     });
+    setCurrentLang("html");
+    console.log("④      ", editorData);
   };
 
   const displayCode = () => {
+    console.log(currentLang);
+    console.log(editorData);
     setGlobalState({
       type: "PAYLOAD_CODE",
       payload: {
@@ -53,6 +58,9 @@ export const Multiple = () => {
         currentEditorCode: editorData,
       },
     });
+
+    console.log("①      ", editorData);
+
     let newCode = "";
     for (let info of globalState.editorInfoList) {
       if (info.language === "html") {
@@ -65,6 +73,7 @@ export const Multiple = () => {
         newCode += `<script>${info.value}</script>`;
       }
     }
+
     setCode(newCode);
   };
 
@@ -73,6 +82,8 @@ export const Multiple = () => {
   }, []);
 
   useEffect(() => {
+    console.log(currentLang);
+    console.log("②      ", editorData);
     for (let info of globalState.editorInfoList) {
       if (info.language === currentLang) {
         setEditorInfoList(info);
@@ -95,7 +106,7 @@ export const Multiple = () => {
           height="100vh"
           width="50%"
           language={currentLang}
-          value={editorInfoList?.value}
+          value={editorInfoList ? editorInfoList.value : ""}
           onChange={changeValues}
         />
         <div>
