@@ -23,6 +23,18 @@ export const Multiple = () => {
     setEditorData(value);
   };
 
+  const onClickHTML = () => {
+    setGlobalState({
+      type: "PAYLOAD_CODE",
+      payload: {
+        currentLang: currentLang,
+        currentEditorCode: editorData,
+      },
+    });
+    setCurrentLang("html");
+    console.log("④      ", editorData);
+  };
+
   const onClickCSS = () => {
     setGlobalState({
       type: "PAYLOAD_CODE",
@@ -35,8 +47,7 @@ export const Multiple = () => {
     console.log("③      ", editorData);
   };
 
-  const onClickHTML = () => {
-    
+  const onClickJavascript = () => {
     setGlobalState({
       type: "PAYLOAD_CODE",
       payload: {
@@ -44,7 +55,7 @@ export const Multiple = () => {
         currentEditorCode: editorData,
       },
     });
-    setCurrentLang("html");
+    setCurrentLang("javascript");
     console.log("④      ", editorData);
   };
 
@@ -99,7 +110,7 @@ export const Multiple = () => {
       <button onClick={displayCode}>表示させる</button>
       <button onClick={onClickHTML}>HTML</button>
       <button onClick={onClickCSS}>CSS</button>
-      <button onClick={() => setCurrentLang("javascript")}>JavaScript</button>
+      <button onClick={onClickJavascript}>JavaScript</button>
       <div style={{ display: "flex" }}>
         <Editor
           theme="vs-dark"

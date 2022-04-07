@@ -23,11 +23,19 @@ export const useAllFiles = () => {
         }
       }
       const response = await axios.get<string>(url);
-      newArray.push({
-        name: url,
-        language: targetLang,
-        value: response.data,
-      });
+      if (targetLang === "js") {
+        newArray.push({
+          name: url,
+          language: "javascript",
+          value: response.data,
+        });
+      } else {
+        newArray.push({
+          name: url,
+          language: targetLang,
+          value: response.data,
+        });
+      }
     }
     setGlobalState({
       type: "SET_EDITORINFOLIST",

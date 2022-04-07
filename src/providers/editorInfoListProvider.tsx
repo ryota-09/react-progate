@@ -38,14 +38,12 @@ const reducer = (state: State, action: Action) => {
     case "CHANGE_VALUE":
       return state;
     case "SET_EDITORINFOLIST":
-      return action.payload.editorInforList
-        ? { ...state, editorInfoList: [...action.payload.editorInforList] }
-        : state;
+      return action.payload.editorInforList ? {...state, editorInfoList: [...action.payload.editorInforList]} : state;
     case "PAYLOAD_CODE":
-      if (action.payload.currentEditorCode) {
-        for (let info of state.editorInfoList) {
-          if (info.language === action.payload.currentLang) {
-            info.value = action.payload.currentEditorCode;
+      if(action.payload.currentEditorCode){
+        for(let info of state.editorInfoList){
+          if(info.language === action.payload.currentLang){
+            info.value = action.payload.currentEditorCode
           }
         }
       }
