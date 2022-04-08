@@ -6,18 +6,80 @@ import { useAllFiles } from "../../hooks/useAllFiles";
 import { EditorInfoListContext } from "../../providers/editorInfoListProvider";
 import { EditorInfoList } from "../../types/editorInfoList";
 
-const initialCode = "<!-- ここにコードを書いていく -->";
+// const initialCode = "<!-- ここにコードを書いていく -->";
 const answerCode =
-  "<h1 class='title'>タイトル</h1>\n\n<style>\n.title{\ncolor:red;\n}\n</style>";
+  `<!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>.title{color:red;}</style>
+    <title>Document</title>
+  </head>
+  <body>
+  <h1 class="title">タイトル</h1>
+  <button type="button" id="button">ボタン</button>
+  <p>ボタンを押すとアラートが出る！</p>  
+    <script>const buttonElement = document.getElementById("button");
+    buttonElement.addEventListener("click", () => {
+      alert("クリックされました！");
+    });</script>
+  </body>
+  </html>;`;
+
+
+  const makeDisplayCode = (infoList: Array<EditorInfoList>) => {
+    let displayCode = "";
+    let htmlCode = "";
+    let cssCode = "";
+    let jsCode = "";
+    
+  
+    for (let info of infoList) {
+      if (info.language === "html") {
+        htmlCode += info.value;
+      }
+      if (info.language === "css") {
+        cssCode += info.value;
+      }
+      if (info.language === "javascript") {
+        jsCode += info.value;
+      }
+    }
+
+    let initialCode = `<!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <style>${cssCode}</style>
+      <title>Document</title>
+    </head>
+    <body>
+      ${htmlCode}
+      <script>${jsCode}</script>
+    </body>
+    </html>`;
+    displayCode = initialCode;
+  
+    console.log("initialCode     ", initialCode);
+    console.log("display      ", displayCode);
+  
+    return  displayCode ;
+  };
 
 export const Multiple = () => {
   const [editorData, setEditorData] = useState("");
   const [currentLang, setCurrentLang] = useState("html");
   const [editorInfoList, setEditorInfoList] = useState<EditorInfoList>();
-  const [code, setCode] = useState("");
-
+  const [ code, setCode ] = useState("")
+  
   const { globalState, setGlobalState } = useContext(EditorInfoListContext);
   const { loadFileData } = useAllFiles();
+
+  
 
   const changeValues = (value: any) => {
     setEditorData(value);
@@ -32,7 +94,6 @@ export const Multiple = () => {
       },
     });
     setCurrentLang("html");
-    console.log("④      ", editorData);
   };
 
   const onClickCSS = () => {
@@ -44,7 +105,6 @@ export const Multiple = () => {
       },
     });
     setCurrentLang("css");
-    console.log("③      ", editorData);
   };
 
   const onClickJavascript = () => {
@@ -56,12 +116,9 @@ export const Multiple = () => {
       },
     });
     setCurrentLang("javascript");
-    console.log("④      ", editorData);
   };
 
   const displayCode = () => {
-    console.log(currentLang);
-    console.log(editorData);
     setGlobalState({
       type: "PAYLOAD_CODE",
       payload: {
@@ -69,32 +126,19 @@ export const Multiple = () => {
         currentEditorCode: editorData,
       },
     });
-
-    console.log("①      ", editorData);
-
-    let newCode = "";
-    for (let info of globalState.editorInfoList) {
-      if (info.language === "html") {
-        newCode += info.value;
-      }
-      if (info.language === "css") {
-        newCode += `<style>${info.value}<style>`;
-      }
-      if (info.language === "javascript") {
-        newCode += `<script>${info.value}</script>`;
-      }
-    }
-
-    setCode(newCode);
+    let targetCode = makeDisplayCode(globalState.editorInfoList);
+    setCode(targetCode);
   };
+
+  const reload = () => {
+    window.location.reload()
+  }
 
   useEffect(() => {
     loadFileData();
   }, []);
 
   useEffect(() => {
-    console.log(currentLang);
-    console.log("②      ", editorData);
     for (let info of globalState.editorInfoList) {
       if (info.language === currentLang) {
         setEditorInfoList(info);
@@ -117,6 +161,7 @@ export const Multiple = () => {
           height="100vh"
           width="50%"
           language={currentLang}
+          onMount={() => setCurrentLang("html")}
           value={editorInfoList ? editorInfoList.value : ""}
           onChange={changeValues}
         />
@@ -125,6 +170,7 @@ export const Multiple = () => {
           <iframe srcDoc={answerCode} width="100%"></iframe>
           <p>【自分のコードのブラウザ表示】</p>
           <iframe srcDoc={code} width="100%"></iframe>
+          <button onClick={reload} >リセット</button>
         </div>
       </div>
     </>
