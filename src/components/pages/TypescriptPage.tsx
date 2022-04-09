@@ -20,26 +20,38 @@ export const TypescriptPage: FC = () => {
     const next = editorData.split("console.log(");
     setInput(next[1].split(")")[0]);
   };
+  const reload = () => {
+    window.location.reload()
+  }
   return (
     <>
-      <button onClick={onClick}>コンソール表示</button>
-      <div style={{ display: "flex" }}>
+    <div className="row">
+      <div className="col s12 center">
+        <h5>TypeScriptの練習</h5>
+      </div>
+    </div>
+    <div className="row">
+      <div className="col s6">
+      <span className="btn teal accent-4"  onClick={onClick}>コンソール表示</span>
+        <div></div><br />
         <Editor
           theme="vs-dark"
-          height="100vh"
-          width="50%"
+          height="60vh"
+          width="100%"
           language="typescript"
           value={defaultValue}
           onChange={handleEditorChange}
         />
-        <div>
-          <p>【問題】</p>
-          <p>配列のindex番号1番の要素をコンソールに出力する。</p>
+        </div>
+        <div className="col s6">
+        <p>【問題】</p>
+          <h5>配列のindex番号1番の要素をコンソールに出力する。</h5>
           <br />
           <p>【コンソール画面】</p>
-          <iframe srcDoc={consoleCode} width="100%"></iframe>
+          <iframe srcDoc={consoleCode} width="100%" height="100%" className="white"></iframe>
+          <span className="btn blue-grey lighten-3" onClick={reload} >リセット</span> 
         </div>
-      </div>
+    </div>
     </>
   );
 };
