@@ -19,9 +19,9 @@ const answerCode =
   </head>
   <body>
   <h1 class="title">タイトル</h1>
-  <button type="button" id="button">ボタン</button>
+  <button  type="button"  id="button" >ボタン</button> 
   <p>ボタンを押すとアラートが出る！</p>  
-    <script>const buttonElement = document.getElementById("button");
+    <script>const buttonElement = document.getElementById("button" );
     buttonElement.addEventListener("click", () => {
       alert("クリックされました！");
     });</script>
@@ -148,30 +148,46 @@ export const Multiple = () => {
 
   return (
     <>
-      <p>マルチファイル.ver</p>
-      <p>答えと同じ表示を目指そう！</p>
-      <button onClick={displayCode}>表示させる</button>
-      <button onClick={onClickHTML}>HTML</button>
-      <button onClick={onClickCSS}>CSS</button>
-      <button onClick={onClickJavascript}>JavaScript</button>
-      <div style={{ display: "flex" }}>
-        <Editor
+    <div className="container">
+    <div className="row">
+          <div className="col s12 center">
+            <h5>HTMLの練習( マルチファイル.ver )</h5>
+            <p>答えと同じ表示を目指そう！</p>
+          </div>
+        </div>
+    </div>
+    <div className="row">
+      <div className="col s6">
+      <span className="btn teal accent-4" onClick={displayCode}>表示させる</span>&nbsp;&nbsp; 
+      <span className="btn blue-grey lighten-3" onClick={onClickHTML}>HTML</span>&nbsp;&nbsp; 
+      <span className="btn blue-grey lighten-3" onClick={onClickCSS}>CSS</span>&nbsp;&nbsp; 
+      <span className="btn blue-grey lighten-3" onClick={onClickJavascript}>JavaScript</span>
+      <div></div>
+      <br />
+      <Editor
           theme="vs-dark"
-          height="100vh"
-          width="50%"
+          height="60vh"
+          width="100%"
           language={currentLang}
           onMount={() => setCurrentLang("html")}
           value={editorInfoList ? editorInfoList.value : ""}
           onChange={changeValues}
         />
-        <div>
+      </div>
+      <div className="col s6">
+      <div>
           <p>【答え】</p>
-          <iframe srcDoc={answerCode} width="100%"></iframe>
-          <p>【自分のコードのブラウザ表示】</p>
-          <iframe srcDoc={code} width="100%"></iframe>
-          <button onClick={reload} >リセット</button>
+          <iframe srcDoc={answerCode} width="100%" height="100%" className="white"></iframe>
         </div>
       </div>
+      <div className="col s6">
+      <div>
+          <p>【自分のコードのブラウザ表示】</p>
+          <iframe srcDoc={code} width="100%" height="100%" className="white"></iframe>
+          <span className="btn blue-grey lighten-3" onClick={reload} >リセット</span> 
+        </div>
+      </div>
+    </div>
     </>
   );
 };

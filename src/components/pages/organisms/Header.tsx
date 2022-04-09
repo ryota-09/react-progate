@@ -6,7 +6,7 @@ export const Header = () => {
     <div className="header">
       <nav>
         <div className="nav-wrapper teal accent-4">
-          <Link to="#" className="brand-logo">Progate Clone with React</Link>
+          <Link to="#" className="brand-logo">&nbsp;&nbsp;Progate Clone with React</Link>
           <Link to="#mobile-menu" className="sidenav-trigger" data-activates="mobile-menu">
             <i className="material-icons"  data-target="mobile-menu">menu</i>
           </Link>
