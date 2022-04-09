@@ -26,7 +26,7 @@ const answerCode =
       alert("クリックされました！");
     });</script>
   </body>
-  </html>;`;
+  </html>`
 
 
   const makeDisplayCode = (infoList: Array<EditorInfoList>) => {
@@ -148,7 +148,6 @@ export const Multiple = () => {
 
   return (
     <>
-      <h1>Progate Clone with React</h1>
       <p>マルチファイル.ver</p>
       <p>答えと同じ表示を目指そう！</p>
       <button onClick={displayCode}>表示させる</button>

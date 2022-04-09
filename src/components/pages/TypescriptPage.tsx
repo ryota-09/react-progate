@@ -22,7 +22,6 @@ export const TypescriptPage: FC = () => {
   };
   return (
     <>
-      <h1>TypeScriptページ</h1>
       <button onClick={onClick}>コンソール表示</button>
       <div style={{ display: "flex" }}>
         <Editor
