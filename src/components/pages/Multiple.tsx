@@ -7,8 +7,7 @@ import { EditorInfoListContext } from "../../providers/editorInfoListProvider";
 import { EditorInfoList } from "../../types/editorInfoList";
 
 // const initialCode = "<!-- ここにコードを書いていく -->";
-const answerCode =
-  `<!DOCTYPE html>
+const answerCode = `<!DOCTYPE html>
   <html lang="en">
   <head>
     <meta charset="UTF-8">
@@ -26,29 +25,27 @@ const answerCode =
       alert("クリックされました！");
     });</script>
   </body>
-  </html>`
+  </html>`;
 
+const makeDisplayCode = (infoList: Array<EditorInfoList>) => {
+  let displayCode = "";
+  let htmlCode = "";
+  let cssCode = "";
+  let jsCode = "";
 
-  const makeDisplayCode = (infoList: Array<EditorInfoList>) => {
-    let displayCode = "";
-    let htmlCode = "";
-    let cssCode = "";
-    let jsCode = "";
-    
-  
-    for (let info of infoList) {
-      if (info.language === "html") {
-        htmlCode += info.value;
-      }
-      if (info.language === "css") {
-        cssCode += info.value;
-      }
-      if (info.language === "javascript") {
-        jsCode += info.value;
-      }
+  for (let info of infoList) {
+    if (info.language === "html") {
+      htmlCode += info.value;
     }
+    if (info.language === "css") {
+      cssCode += info.value;
+    }
+    if (info.language === "javascript") {
+      jsCode += info.value;
+    }
+  }
 
-    let initialCode = `<!DOCTYPE html>
+  let initialCode = `<!DOCTYPE html>
     <html lang="en">
     <head>
       <meta charset="UTF-8">
@@ -62,24 +59,22 @@ const answerCode =
       <script>${jsCode}</script>
     </body>
     </html>`;
-    displayCode = initialCode;
-  
-    console.log("initialCode     ", initialCode);
-    console.log("display      ", displayCode);
-  
-    return  displayCode ;
-  };
+  displayCode = initialCode;
+
+  console.log("initialCode     ", initialCode);
+  console.log("display      ", displayCode);
+
+  return displayCode;
+};
 
 export const Multiple = () => {
   const [editorData, setEditorData] = useState("");
   const [currentLang, setCurrentLang] = useState("html");
   const [editorInfoList, setEditorInfoList] = useState<EditorInfoList>();
-  const [ code, setCode ] = useState("")
-  
+  const [code, setCode] = useState("");
+
   const { globalState, setGlobalState } = useContext(EditorInfoListContext);
   const { loadFileData } = useAllFiles();
-
-  
 
   const changeValues = (value: any) => {
     setEditorData(value);
@@ -131,8 +126,8 @@ export const Multiple = () => {
   };
 
   const reload = () => {
-    window.location.reload()
-  }
+    window.location.reload();
+  };
 
   useEffect(() => {
     loadFileData();
@@ -148,46 +143,71 @@ export const Multiple = () => {
 
   return (
     <>
-    <div className="container">
-    <div className="row">
+      <div className="container">
+        <div className="row">
           <div className="col s12 center">
             <h5>HTMLの練習( マルチファイル.ver )</h5>
             <p>答えと同じ表示を目指そう！</p>
           </div>
         </div>
-    </div>
-    <div className="row">
-      <div className="col s6">
-      <span className="btn teal accent-4" onClick={displayCode}>表示させる</span>&nbsp;&nbsp; 
-      <span className="btn blue-grey lighten-3" onClick={onClickHTML}>HTML</span>&nbsp;&nbsp; 
-      <span className="btn blue-grey lighten-3" onClick={onClickCSS}>CSS</span>&nbsp;&nbsp; 
-      <span className="btn blue-grey lighten-3" onClick={onClickJavascript}>JavaScript</span>
-      <div></div>
-      <br />
-      <Editor
-          theme="vs-dark"
-          height="60vh"
-          width="100%"
-          language={currentLang}
-          onMount={() => setCurrentLang("html")}
-          value={editorInfoList ? editorInfoList.value : ""}
-          onChange={changeValues}
-        />
       </div>
-      <div className="col s6">
-      <div>
-          <p>【答え】</p>
-          <iframe srcDoc={answerCode} width="100%" height="100%" className="white"></iframe>
+      <div className="row">
+        <div className="col s6">
+          <span className="btn teal accent-4" onClick={displayCode}>
+            表示させる
+          </span>
+          &nbsp;&nbsp;
+          <span className="btn blue-grey lighten-3 " onClick={onClickHTML}>
+            HTML
+          </span>
+          &nbsp;&nbsp;
+          <span className="btn blue-grey lighten-3" onClick={onClickCSS}>
+            CSS
+          </span>
+          &nbsp;&nbsp;
+          <span className="btn blue-grey lighten-3" onClick={onClickJavascript}>
+            JavaScript
+          </span>
+          <div></div>
+          <br />
+          <Editor
+            theme="vs-dark"
+            height="60vh"
+            width="100%"
+            language={currentLang}
+            onMount={() => setCurrentLang("html")}
+            value={editorInfoList ? editorInfoList.value : ""}
+            onChange={changeValues}
+          />
+        </div>
+        <div className="col s6">
+          <div>
+            <p>【答え】</p>
+            <iframe
+              title="answer"
+              srcDoc={answerCode}
+              width="100%"
+              height="100%"
+              className="white"
+            ></iframe>
+          </div>
+        </div>
+        <div className="col s6">
+          <div>
+            <p>【自分のコードのブラウザ表示】</p>
+            <iframe
+              title="code"
+              srcDoc={code}
+              width="100%"
+              height="100%"
+              className="white"
+            ></iframe>
+            <span className="btn blue-grey lighten-3" onClick={reload}>
+              リセット
+            </span>
+          </div>
         </div>
       </div>
-      <div className="col s6">
-      <div>
-          <p>【自分のコードのブラウザ表示】</p>
-          <iframe srcDoc={code} width="100%" height="100%" className="white"></iframe>
-          <span className="btn blue-grey lighten-3" onClick={reload} >リセット</span> 
-        </div>
-      </div>
-    </div>
     </>
   );
 };
