@@ -11,7 +11,7 @@ export const Header = () => {
             <i className="material-icons"  data-target="mobile-menu">menu</i>
           </Link>
           <ul id="nav-mobile" className="right hide-on-med-and-down">
-            <li><Link to="#">My Page</Link></li>
+            <li><Link to="myPage">My Page</Link></li>
             <li><Link to="registerUser">Sign Up</Link></li>
             <li><Link to="login">Sign In</Link></li>
           </ul>
