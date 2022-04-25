@@ -12,8 +12,8 @@ export const Header = () => {
           </Link>
           <ul id="nav-mobile" className="right hide-on-med-and-down">
             <li><Link to="#">My Page</Link></li>
-            <li><Link to="#">About</Link></li>
-            <li><Link to="#">Contact</Link></li>
+            <li><Link to="registerUser">Sign Up</Link></li>
+            <li><Link to="login">Sign In</Link></li>
           </ul>
         </div>
         <ul className="sidenav grey light-2" id="mobile-menu">
