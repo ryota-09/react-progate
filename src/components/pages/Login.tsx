@@ -1,5 +1,5 @@
 import axios from "axios";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useState } from "react";
 
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 
@@ -8,7 +8,7 @@ export const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const { userState, setUserState } = useCurrentUser();
+  const { setUserState } = useCurrentUser();
 
   const onChangeName = (event: ChangeEvent<HTMLInputElement>) => {
     setUsername(event.target.value);
@@ -24,13 +24,13 @@ export const Login = () => {
 
   const login = async (): Promise<void> => {
     let token = "";
-    const response = await axios.post("http://localhost:3001/auth/login", {
+    const response = await axios.post("http://localhost:3000/auth/login", {
       username: username,
       email: email,
       password: password,
     });
     token = response.data.access_token;
-    const res = await axios.get("http://localhost:3001/users/" + username, {
+    const res = await axios.get("http://localhost:3000/users/" + username, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -74,8 +74,6 @@ export const Login = () => {
           test
         </button>
       </div>
-      <p>user:</p>
-      <h3>{userState !== undefined ? userState.currentUser.username : ""}</h3>
     </>
   );
 };

@@ -19,9 +19,9 @@ export const UserContext = createContext({} as UserContextType);
 
 const initialUserState: State = {
   currentUser: {
-    username: "Mac",
+    username: "",
     avatar: "",
-    remarks: "初めまして！！",
+    remarks: "",
     beginnerStatus: true,
     htmlStatus: false,
     tsStatus: false,

@@ -1,11 +1,13 @@
 import { useCurrentUser } from "../../hooks/useCurrentUser";
+import { EditArea } from "./organisms/EditArea ";
 
 export const MyPage = () => {
-  const { userState, setUserState } = useCurrentUser();
+  const { userState } = useCurrentUser();
 
   return (
     <>
       <div className="myPageArea">
+        <EditArea currentUser={userState.currentUser} />
         <div className="row">
           <div className="col s12 center">
             <h2>My Page</h2>
@@ -13,16 +15,16 @@ export const MyPage = () => {
           <div className="col s3 offset-s1 center">
             <img
               className="responsive-img img"
-              src="https://joeschmoe.io/api/v1/random"
+              src={userState.currentUser.avatar}
               alt=""
             />
           </div>
           <div className="col s8">
             <p>username: </p>
-            <p>ここにユーザーネーム</p>
+            <h3>{userState.currentUser.username}</h3>
             <br />
             <p>ひとこと: </p>
-            <p>ここにテキスト</p>
+            <p>{userState.currentUser.remarks}</p>
           </div>
         </div>
         <div className="row">
@@ -30,7 +32,7 @@ export const MyPage = () => {
             <h3>Your Score</h3>
           </div>
           <div className="col s4 center">
-            <h4>Biggener</h4>
+            <h4>Beginner</h4>
             <img
               className="responsive-img img"
               src="/img/beginner.jpg"
