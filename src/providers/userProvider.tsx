@@ -22,7 +22,7 @@ const initialUserState: State = {
     username: "",
     avatar: "",
     remarks: "",
-    beginnerStatus: true,
+    beginnerStatus: false,
     htmlStatus: false,
     tsStatus: false,
   },
