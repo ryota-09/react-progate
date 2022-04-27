@@ -1,8 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import Editor from "@monaco-editor/react";
+import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 
 import { useAllFiles } from "../../hooks/useAllFiles";
+import { useCurrentUser } from "../../hooks/useCurrentUser";
 import { EditorInfoListContext } from "../../providers/editorInfoListProvider";
 import { EditorInfoList } from "../../types/editorInfoList";
 
@@ -72,9 +74,12 @@ export const Multiple = () => {
   const [currentLang, setCurrentLang] = useState("html");
   const [editorInfoList, setEditorInfoList] = useState<EditorInfoList>();
   const [code, setCode] = useState("");
+  const [canShow, setCanShow] = useState(false);
+  const [loadingStr, setLoadingStr] = useState("");
 
   const { globalState, setGlobalState } = useContext(EditorInfoListContext);
   const { loadFileData } = useAllFiles();
+  const { userState, setUserState } = useCurrentUser();
 
   const changeValues = (value: any) => {
     setEditorData(value);
@@ -129,6 +134,45 @@ export const Multiple = () => {
     window.location.reload();
   };
 
+  const check = () => {
+    let targetCode = makeDisplayCode(globalState.editorInfoList);
+
+    setLoadingStr("コードを確認中.....");
+    const isOk = (): boolean => {
+      let frag = false;
+
+      if (
+        targetCode.trim().includes("class=") &&
+        targetCode.trim().includes("getElementById") &&
+        targetCode.trim().includes("addEventListener")
+      ) {
+        frag = true;
+      }
+      return frag;
+    };
+    setTimeout(async () => {
+      if (isOk()) {
+        const response = await axios.patch(
+          "http://localhost:3000/users/htmlstatus/" +
+            userState.currentUser.username,
+          {
+            htmlStatus: true,
+          }
+        );
+        setUserState({
+          type: "TOGGLE_MULTIPLE_STATUS",
+          payload: {
+            htmlStatus: response.data.htmlStatus,
+          },
+        });
+        setLoadingStr("");
+        setCanShow(true);
+      } else {
+        setLoadingStr("もう一度考えてみよう！");
+      }
+    }, 1000);
+  };
+
   useEffect(() => {
     loadFileData();
   }, []);
@@ -157,17 +201,38 @@ export const Multiple = () => {
             表示させる
           </span>
           &nbsp;&nbsp;
-          <span className="btn blue-grey lighten-3 " onClick={onClickHTML}>
-            HTML
-          </span>
+          {currentLang === "html" ? (
+            <span className="btn orange darken-1" onClick={onClickHTML}>
+              HTML
+            </span>
+          ) : (
+            <span className="btn blue-grey lighten-3 " onClick={onClickHTML}>
+              HTML
+            </span>
+          )}
           &nbsp;&nbsp;
-          <span className="btn blue-grey lighten-3" onClick={onClickCSS}>
-            CSS
-          </span>
+          {currentLang === "css" ? (
+            <span className="btn blue lighten-3" onClick={onClickCSS}>
+              CSS
+            </span>
+          ) : (
+            <span className="btn blue-grey lighten-3" onClick={onClickCSS}>
+              CSS
+            </span>
+          )}
           &nbsp;&nbsp;
-          <span className="btn blue-grey lighten-3" onClick={onClickJavascript}>
-            JavaScript
-          </span>
+          {currentLang === "javascript" ? (
+            <span className="btn yellow darken-5" onClick={onClickJavascript}>
+              JavaScript
+            </span>
+          ) : (
+            <span
+              className="btn blue-grey lighten-3"
+              onClick={onClickJavascript}
+            >
+              JavaScript
+            </span>
+          )}
           <div></div>
           <br />
           <Editor
@@ -205,6 +270,18 @@ export const Multiple = () => {
             <span className="btn blue-grey lighten-3" onClick={reload}>
               リセット
             </span>
+            &nbsp;&nbsp;&nbsp;
+            <span className="btn blue" onClick={check}>
+              コードをチェックする
+            </span>
+            &nbsp; &nbsp;&nbsp;&nbsp;<span>{loadingStr}</span>
+            {canShow ? (
+              <span className="amber-text amber-darken-4">
+                Beginnerステージ クリア！🎉
+              </span>
+            ) : (
+              ""
+            )}
           </div>
         </div>
       </div>
