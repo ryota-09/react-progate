@@ -59,20 +59,28 @@ export const Login = () => {
   return (
     <>
       <div className="myPageArea">
-        <h5>Login Page</h5>
-        <p>User Name:</p>
-        <input type="text" onChange={onChangeName} value={username} />
-        <p>E-mail:</p>
-        <input type="text" onChange={onChangeEmail} value={email} />
-        <p>PassWord:</p>
-        <input type="text" onChange={onChangePassword} value={password} />
-        <button className="btn" onClick={login}>
-          sign in
-        </button>
-        <br />
-        <button className="btn pink" onClick={testBtn}>
-          test
-        </button>
+        <div className="row">
+          <div className="col s12 center">
+            <h3>Sign In Page</h3>
+          </div>
+          <div className="col s2" />
+          <div className="col s8">
+            <p>User Name:</p>
+            <input type="text" onChange={onChangeName} value={username} />
+            <p>E-mail:</p>
+            <input type="text" onChange={onChangeEmail} value={email} />
+            <p>PassWord:</p>
+            <input type="text" onChange={onChangePassword} value={password} />
+            <button className="btn" onClick={login}>
+              sign in
+            </button>
+            <br />
+            <button className="btn pink" onClick={testBtn}>
+              test
+            </button>
+          </div>
+          <div className="col s2" />
+        </div>
       </div>
     </>
   );

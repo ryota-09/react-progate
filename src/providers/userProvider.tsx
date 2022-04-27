@@ -11,8 +11,8 @@ type State = {
 };
 
 type Action = {
-  type: "SET_CURRENT_USER";
-  payload: { currentUser?: User };
+  type: "SET_CURRENT_USER" | "TOGGLE_BEGINNER_STATUS" | "TOGGLE_TS_STATUS";
+  payload: { currentUser?: User; beginnerStatus?: boolean; tsStatus?: boolean };
 };
 
 export const UserContext = createContext({} as UserContextType);
@@ -33,6 +33,24 @@ const reducer = (state: State, action: Action) => {
     case "SET_CURRENT_USER":
       return action.payload.currentUser
         ? { ...state, currentUser: action.payload.currentUser }
+        : state;
+    case "TOGGLE_BEGINNER_STATUS":
+      return action.payload.beginnerStatus
+        ? {
+            currentUser: {
+              ...state.currentUser,
+              beginnerStatus: action.payload.beginnerStatus,
+            },
+          }
+        : state;
+    case "TOGGLE_TS_STATUS":
+      return action.payload.tsStatus
+        ? {
+            currentUser: {
+              ...state.currentUser,
+              tsStatus: action.payload.tsStatus,
+            },
+          }
         : state;
     default:
       return state;

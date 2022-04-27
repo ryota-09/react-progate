@@ -1,6 +1,8 @@
 /* eslint-disable jsx-a11y/iframe-has-title */
 import Editor from "@monaco-editor/react";
+import axios from "axios";
 import { FC, useState } from "react";
+import { useCurrentUser } from "../../hooks/useCurrentUser";
 
 import { DiffArea } from "./organisms/DiffArea";
 
@@ -11,10 +13,14 @@ const answerValue =
   "{\nconst newArray = ['スイム','バイク','ラン'];\nconsole.log(newArray[0])\n}";
 
 export const TypescriptPage: FC = () => {
+  const { userState, setUserState } = useCurrentUser();
+
   const [input, setInput] = useState<string>();
   const [code, setCode] = useState<string>();
   const [editorData, setEditorData] = useState("");
   const [canShow, setCanShow] = useState(false);
+  const [loadingStr, setLoadingStr] = useState("");
+  const [canShowResult, setCanShowResult] = useState(false);
 
   let consoleCode = `<p id='console'></p><script>${code};const target = ${input}; const consoleElement = document.getElementById('console');consoleElement.textContent = target ?? '' ;</script>`;
 
@@ -30,8 +36,40 @@ export const TypescriptPage: FC = () => {
   };
 
   const showAnswer = () => {
-    setCode( "{" + editorData + "}");
+    setCode("{" + editorData + "}");
     setCanShow(!canShow);
+  };
+
+  const check = () => {
+    setLoadingStr("コードを確認中.....");
+    const isOk = (): boolean => {
+      let frag = false;
+      if (editorData.trim().includes("newArray[0]")) {
+        frag = true;
+      }
+      return frag;
+    };
+    setTimeout(async () => {
+      if (isOk()) {
+        const response = await axios.patch(
+          "http://localhost:3000/users/tsstatus/" +
+            userState.currentUser.username,
+          {
+            tsStatus: true,
+          }
+        );
+        setUserState({
+          type: "TOGGLE_TS_STATUS",
+          payload: {
+            tsStatus: response.data.tsStatus,
+          },
+        });
+        setLoadingStr("");
+        setCanShowResult(true);
+      } else {
+        setLoadingStr("もう一度考えてみよう！");
+      }
+    }, 1000);
   };
 
   const reload = () => {
@@ -74,6 +112,18 @@ export const TypescriptPage: FC = () => {
           <span className="btn blue-grey lighten-3" onClick={reload}>
             リセット
           </span>
+          &nbsp;&nbsp;&nbsp;
+          <span className="btn blue" onClick={check}>
+            コードをチェックする
+          </span>
+          &nbsp; &nbsp;&nbsp;&nbsp;<span>{loadingStr}</span>
+          {canShowResult ? (
+            <span className="amber-text amber-darken-4">
+              Beginnerステージ クリア！🎉
+            </span>
+          ) : (
+            ""
+          )}
         </div>
       </div>
       <div className="row">
