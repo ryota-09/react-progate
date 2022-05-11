@@ -1,7 +1,11 @@
 import axios from "axios";
 import { ChangeEvent, useState } from "react";
+import { useHistory } from "react-router-dom";
+import Cookie from "universal-cookie";
 
 import { useCurrentUser } from "../../hooks/useCurrentUser";
+
+const cookie = new Cookie();
 
 export const Login = () => {
   const [username, setUsername] = useState("");
@@ -9,6 +13,7 @@ export const Login = () => {
   const [password, setPassword] = useState("");
 
   const { setUserState } = useCurrentUser();
+  const history = useHistory();
 
   const onChangeName = (event: ChangeEvent<HTMLInputElement>) => {
     setUsername(event.target.value);
@@ -30,6 +35,8 @@ export const Login = () => {
       password: password,
     });
     token = response.data.access_token;
+    const option = { path: "/" };
+    cookie.set("access_token", token, option);
     const res = await axios.get("http://localhost:3000/users/" + username, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -48,6 +55,7 @@ export const Login = () => {
         },
       },
     });
+    history.push("/myPage");
   };
 
   const testBtn = () => {
